@@ -195,13 +195,15 @@ var upstaged = (function() {
 				document.title = el[0].innerHTML;
 			}
 		},
+		mdHolderQuerySel: function() { return document.querySelector("body") },
 		run: function (options) {
 			for (var option in options) {
 				upstaged[option] = options[option];
 			}
-			
+
+			let mdHolderQuerySel = upstaged?.option?.mdHolderQuerySel || this.mdHolderQuerySel;
 			// Load the article
-			this.mdHolder = document.querySelector(this.mdHolderQuerySel); //document.getElementsByTagName("body")[0];
+			this.mdHolder = mdHolderQuerySel();
 
 			// Save the markdown for after we load the parser
 			this.markdownContent = this.mdHolder.innerHTML;
