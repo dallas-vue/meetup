@@ -1,4 +1,4 @@
-var upstaged = (function() {
+const upstaged = (function() {
 	showdownJs = 'js/showdown.js';
 	prettifyJs = 'js/prettify.js';
 	
@@ -31,26 +31,26 @@ var upstaged = (function() {
 		afterRender: function() {},
 		plugins: {
 			gist: function(gistId, element){
-				var callbackName = "gist_callback";
+				const callbackName = "gist_callback";
 				window[callbackName] = function (gistData) {
 					
 					delete window[callbackName];
-					var html = '<link rel="stylesheet" href="' + gistData.stylesheet + '"></link>';
+					const html = '<link rel="stylesheet" href="' + gistData.stylesheet + '"></link>';
 					html += gistData.div;
 
-					var gistContainer = document.createElement('div');
+					const gistContainer = document.createElement('div');
 					gistContainer.innerHTML = html;
 
 					element.parentNode.replaceChild(gistContainer, element);
 				};
 
-				var script = document.createElement("script");
+				const script = document.createElement("script");
 				script.setAttribute("src", "https://gist.github.com/" + gistId + ".json?callback=" + callbackName);
 				document.body.appendChild(script);
 			}
 		},
 		traverseChildNodes: function(node) {
-			var next;
+			let next;
 
 			if (node.nodeType === 1) {
 
@@ -85,7 +85,7 @@ var upstaged = (function() {
 		isRendered: false,
 		onPrettifyJsLoaded: function() {},
 		loadScript: function(src) {
-			var s = document.createElement('script');
+			const s = document.createElement('script');
 			
 			s.type = 'text/javascript';
 			s.async = true;
@@ -107,15 +107,15 @@ var upstaged = (function() {
 				}
 			});
 			
-			var head = document.getElementsByTagName('head')[0].appendChild(s);
+			const head = document.getElementsByTagName('head')[0].appendChild(s);
 		},
 		loadStyle: function(href, media) {
-			var s = document.createElement('link');
+			const s = document.createElement('link');
 			s.type = 'text/css';
 			s.media = media || 'all';
 			s.rel = 'stylesheet';
 			s.href = href;
-			var head = document.getElementsByTagName('head')[0];
+			const head = document.getElementsByTagName('head')[0];
 			head.appendChild(s);
 		},
 		loadBlock: function(file, selector) {
@@ -126,19 +126,19 @@ var upstaged = (function() {
 
 				if(selector.substring(0,1) == '.') {
 					// IE 8+ = document.querySelector(selector);
-					var el = document.getElementsByClassName(selector.substring(1))[0];
+					const el = document.getElementsByClassName(selector.substring(1))[0];
 				} else {
-					var el = document.getElementsByTagName(selector)[0];
+					const el = document.getElementsByTagName(selector)[0];
 				}
 
-				var e = document.createElement('div');
+				const e = document.createElement('div');
 				e.innerHTML = html;
 				while(e.firstChild) { el.appendChild(e.firstChild); }
 			});
 		},
 		render: function(markdownContent) {
-			var converter = new Showdown.converter({extensions: ['github', 'prettify', 'table'] });
-			var html = converter.makeHtml(markdownContent);
+			const converter = new Showdown.converter({extensions: ['github', 'prettify', 'table'] });
+			const html = converter.makeHtml(markdownContent);
 			
 			this.mdHolder.innerHTML = '<div class="wrapper">\
 				<main role="main">\
@@ -148,18 +148,18 @@ var upstaged = (function() {
 
 
 			// Find all background images and put them in the right elements
-			var images = document.getElementsByTagName('main')[0].getElementsByTagName('img');
+			const images = document.getElementsByTagName('main')[0].getElementsByTagName('img');
 
 			// Put all "background" images in their repective DOM elements
-			for (var i = images.length - 1; i >= 0; i--) {
+			for (let i = images.length - 1; i >= 0; i--) {
 				
-				var img = images[i];
+				let img = images[i];
 
 				// BG images have the format "_[elementname]"
 				if(img.alt.substring(0,1) == '_') {
 
 					// Look for that DOM element
-					var el = document.getElementsByTagName(img.alt.substring(1))[0];
+					const el = document.getElementsByTagName(img.alt.substring(1))[0];
 					if(el) {
 
 						el.style.backgroundImage = 'url(' + img.src + ')';
@@ -172,7 +172,7 @@ var upstaged = (function() {
 			}
 
 			// Load content blocks and inject them where needed
-			for (var file in this.blocks) {
+			for (const file in this.blocks) {
 				this.loadBlock(file, this.blocks[file]);
 			}
 
@@ -180,9 +180,9 @@ var upstaged = (function() {
 			this.traverseChildNodes(this.mdHolder);
 
 			// Look for dates in Header elements
-			for (var x in {'h2':0,'h3':0,'h4':0,'h5':0}) {
-				var headers = document.getElementsByTagName(x);
-				for (var i = headers.length - 1; i >= 0; i--) {
+			for (const x in {'h2':0,'h3':0,'h4':0,'h5':0}) {
+				const headers = document.getElementsByTagName(x);
+				for (const i = headers.length - 1; i >= 0; i--) {
 					if(Date.parse(headers[i].innerHTML.replace(/(th|st|nd|rd)/g, ''))) {
 						headers[i].className += ' date';
 					}
@@ -190,14 +190,14 @@ var upstaged = (function() {
 			}
 
 			// Set the title for browser tabs (not Search Engines)
-			var el = document.getElementsByTagName('h1');
+			const el = document.getElementsByTagName('h1');
 			if(el.length && el[0]) {
 				document.title = el[0].innerHTML;
 			}
 		},
 		mdHolderQuerySel: function() { return document.querySelector("body") },
 		run: function (options) {
-			for (var option in options) {
+			for (const option in options) {
 				upstaged[option] = options[option];
 			}
 
@@ -211,18 +211,18 @@ var upstaged = (function() {
 			// Empty the content in case it takes a while to parse the markdown (leaves a blank screen)
 			this.mdHolder.innerHTML = '<div class="spinner"></div>';
 
-			var stylePath, scriptPath; // Prepend this.pathPrefix to these, if it exists
+			let stylePath, scriptPath; // Prepend this.pathPrefix to these, if it exists
 			
 			// Load styles first
-			for (var i = this.styles.length - 1; i >= 0; i--) {
+			for (const i = this.styles.length - 1; i >= 0; i--) {
 				stylePath = this.pathPrefix ? this.pathPrefix + this.styles[i] : this.styles[i];
 				this.loadStyle(stylePath);
 			}
 
-			for (var i = this.scripts.length - 1; i >= 0; i--) {
-				var script = this.scripts[i];
-				var isShowdownJs = script === showdownJs;
-				var isPrettify = script === prettifyJs;
+			for (let i = this.scripts.length - 1; i >= 0; i--) {
+				let script = this.scripts[i];
+				let isShowdownJs = script === showdownJs;
+				let isPrettify = script === prettifyJs;
 				
 				scriptPath = this.pathPrefix ? this.pathPrefix + this.scripts[i] : this.scripts[i];
 				showdownJs = isShowdownJs ? scriptPath : showdownJs;
