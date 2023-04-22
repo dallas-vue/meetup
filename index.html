@@ -3,33 +3,24 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://unpkg.com/buefy/dist/buefy.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.47/vue.global.prod.min.js" integrity="sha512-Wn/yBJ4RQtrSFtq1z61/DM40a7VGN8wnyg8oVhWSZAZchTO9zS/l8Kw6bk32CYjS5VgProK4ujLRMqxEE/bUPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vuetify@3.1.14/dist/vuetify.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@3.1.14/dist/vuetify.min.js"></script>
 </head>
 
 <body>
     <div id="app">
-        <div class="is-flex is-justify-content-center">
+        <div class="d-flex justify-center">
             <img src="./composite-logo.jpg"></img>
         </div>
-        <div class="is-flex is-justify-content-center">
+        <div class="d-flex justify-center">
             <a href="./content/upstaged-test.html">Sample content created with a local, static site generator</a>
         </div>
     </div>
-
-    <script src="https://unpkg.com/vue@3"></script>
-    <!-- Full bundle -->
-    <script src="https://unpkg.com/buefy/dist/buefy.min.js"></script>
-
-    <!-- Individual components -->
-    <!--
-    <script src="https://unpkg.com/buefy/dist/components/table"></script>
-    <script src="https://unpkg.com/buefy/dist/components/input"></script>
-    -->
-
-    <script>
-        new Vue({
-            el: '#app'
-        })
+    <script type="module">
+        // import app from './app.js'
+        const {createApp} = Vue;
+        createApp().mount('#app');
     </script>
 </body>
 </html>
